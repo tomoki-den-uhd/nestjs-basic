@@ -5,3 +5,4 @@ export interface Item {
   description?: string;
   status: 'ON_SALE' | 'SOLD_OUT';
 }
+
