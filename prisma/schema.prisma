@@ -26,5 +26,5 @@ model Item{
 
 enum ItemStatus {
   ON_SALE
-  SOLE_OUT
+  SOLD_OUT
 }

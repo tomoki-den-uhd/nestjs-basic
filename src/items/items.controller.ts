@@ -9,7 +9,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import { Item } from './items.model';
+import { Item } from 'generated/prisma';
 import { CreateItemDto } from './DTO/create-item-dto';
 
 @Controller('items')
@@ -25,8 +25,8 @@ export class ItemsController {
   }
 
   @Post()
-  create(@Body() CreateItemDto: CreateItemDto): Item {
-    return this.itemsService.create(CreateItemDto);
+  async create(@Body() CreateItemDto: CreateItemDto): Promise<Item> {
+    return await this.itemsService.create(CreateItemDto);
   }
   @Put(':id')
   updateStatus(@Param('id', ParseUUIDPipe) id: string) {
