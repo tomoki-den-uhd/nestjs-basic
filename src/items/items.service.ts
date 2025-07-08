@@ -36,11 +36,16 @@ export class ItemsService {
     });
   }
 
-  //   updateStatus(id: string): Item {
-  //     const item = this.findByID(id);
-  //     item.status = 'SOLD_OUT';
-  //     return item;
-  //   }
+  async updateStatus(id: string): Promise<Item> {
+    return await this.prismaService.item.update({
+      data: {
+        status: 'SOLD_OUT',
+      },
+      where: {
+        id,
+      },
+    });
+  }
 
   delete(id: string) {
     this.items = this.items.filter((item) => item.id !== id);
