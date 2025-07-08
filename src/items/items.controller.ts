@@ -16,22 +16,22 @@ import { CreateItemDto } from './DTO/create-item-dto';
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
   @Get()
-  findAll(): Item[] {
-    return this.itemsService.findAll();
+  async findAll(): Promise<Item[]> {
+    return await this.itemsService.findAll();
   }
   @Get(':id') // /items/id
-  findByID(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.itemsService.findByID(id);
+  async findByID(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.itemsService.findByID(id);
   }
 
   @Post()
   async create(@Body() CreateItemDto: CreateItemDto): Promise<Item> {
     return await this.itemsService.create(CreateItemDto);
   }
-  @Put(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string) {
-    return this.itemsService.updateStatus(id);
-  }
+  //   @Put(':id')
+  //   updateStatus(@Param('id', ParseUUIDPipe) id: string) {
+  //     return this.itemsService.updateStatus(id);
+  //   }
 
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string) {
