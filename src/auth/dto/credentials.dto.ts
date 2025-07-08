@@ -1,7 +1,7 @@
 import { IsEmail, IsStrongPassword } from "class-validator";
 
 export class CredentialsDto {
-    @IsEmail()
+  @IsEmail()
   email: string;
 
   @IsStrongPassword({
@@ -10,5 +10,6 @@ export class CredentialsDto {
     minNumbers: 1,
     minSymbols: 1,
     minUppercase: 1,
-})
+  })
+  password: string;
 }

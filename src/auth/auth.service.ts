@@ -5,6 +5,7 @@ import { User } from 'generated/prisma';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayLoad } from './types/jwtPayload';
+import { CredentialsDto } from './dto/credentials.dto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
     });
   }
 
-  async sighIn(credentialsDto: CreateUserDto): Promise<{ token: string }> {
+  async signIn(credentialsDto: CredentialsDto): Promise<{ token: string }> {
     const { email, password } = credentialsDto;
     const user = await this.prismaService.user.findUnique({
       where: {
