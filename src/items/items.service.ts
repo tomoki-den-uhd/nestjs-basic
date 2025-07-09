@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Item, ItemStatus } from 'generated/prisma';
+import { Item, ItemStatus } from '../../generated/prisma';
 import { CreateItemDto } from './DTO/create-item-dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ItemsService {
@@ -11,7 +11,7 @@ export class ItemsService {
     return await this.prismaService.item.findMany(); //findMany()は複数のレコードを取得し、引数には条件を設定できる
   }
 
-  async findByID(id: string): Promise<Item> {
+  async findById(id: string): Promise<Item> {
     const found = await this.prismaService.item.findUnique({
       where: {
         id,
@@ -23,14 +23,16 @@ export class ItemsService {
     return found;
   }
 
-  async create(CreateItemDto: CreateItemDto): Promise<Item> {
+  async create(CreateItemDto: CreateItemDto, userId: string): Promise<Item> {
     const { name, price, description } = CreateItemDto;
+    console.log('通過');
     return await this.prismaService.item.create({
       data: {
         name,
         price,
         description,
         status: ItemStatus.ON_SALE,
+        userId,
       },
     });
   }
@@ -46,9 +48,9 @@ export class ItemsService {
     });
   }
 
-  async delete(id: string) {
+  async delete(id: string, userId: string) {
     await this.prismaService.item.delete({
-      where: { id },
+      where: { id, userId },
     });
   }
 }
