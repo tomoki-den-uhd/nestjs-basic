@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Item, ItemStatus } from 'generated/prisma';
+import { Item, ItemStatus } from '../../generated/prisma';
 import { CreateItemDto } from './DTO/create-item-dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ItemsService {
@@ -11,7 +11,7 @@ export class ItemsService {
     return await this.prismaService.item.findMany(); //findMany()は複数のレコードを取得し、引数には条件を設定できる
   }
 
-  async findByID(id: string): Promise<Item> {
+  async findById(id: string): Promise<Item> {
     const found = await this.prismaService.item.findUnique({
       where: {
         id,
