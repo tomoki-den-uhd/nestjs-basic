@@ -26,7 +26,7 @@ export class ItemsController {
   }
   @Get(':id') // /items/id
   async findByID(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
-    return await this.itemsService.findByID(id);
+    return await this.itemsService.findById(id);
   }
   @Post()
   @UseGuards(AuthGuard('jwt'))
