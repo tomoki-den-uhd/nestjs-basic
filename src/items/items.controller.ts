@@ -7,10 +7,15 @@ import {
   Put,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from 'generated/prisma';
 import { CreateItemDto } from './DTO/create-item-dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request as ExpressRequest } from 'express';
+import { RequestUser } from 'src/auth/types/requestUser';
 
 @Controller('items')
 export class ItemsController {
@@ -23,19 +28,28 @@ export class ItemsController {
   async findByID(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
     return await this.itemsService.findByID(id);
   }
-
   @Post()
-  async create(@Body() CreateItemDto: CreateItemDto): Promise<Item> {
-    return await this.itemsService.create(CreateItemDto);
+  @UseGuards(AuthGuard('jwt'))
+  async create(
+    @Body() CreateItemDto: CreateItemDto,
+    @Request() req: ExpressRequest & { user: RequestUser },
+  ): Promise<Item> {
+    console.log('通過');
+    return await this.itemsService.create(CreateItemDto, req.user.id);
   }
 
   @Put(':id')
-  async updateStatus(@Param('id', ParseUUIDPipe) id: string) {
+  @UseGuards(AuthGuard('jwt'))
+  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
     return await this.itemsService.updateStatus(id);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseUUIDPipe) id: string) {
-    await this.itemsService.delete(id);
+  @UseGuards(AuthGuard('jwt'))
+  async delete(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Request() req: ExpressRequest & { user: RequestUser },
+  ) {
+    await this.itemsService.delete(id, req.user.id);
   }
 }

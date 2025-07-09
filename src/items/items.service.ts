@@ -23,14 +23,16 @@ export class ItemsService {
     return found;
   }
 
-  async create(CreateItemDto: CreateItemDto): Promise<Item> {
+  async create(CreateItemDto: CreateItemDto, userId: string): Promise<Item> {
     const { name, price, description } = CreateItemDto;
+    console.log('通過');
     return await this.prismaService.item.create({
       data: {
         name,
         price,
         description,
         status: ItemStatus.ON_SALE,
+        userId,
       },
     });
   }
@@ -46,9 +48,9 @@ export class ItemsService {
     });
   }
 
-  async delete(id: string) {
+  async delete(id: string, userId: string) {
     await this.prismaService.item.delete({
-      where: { id },
+      where: { id, userId },
     });
   }
 }
